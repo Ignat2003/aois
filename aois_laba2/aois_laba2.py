@@ -7,6 +7,7 @@ infunc = infunc.replace('>', '<=')
 
 variables = sorted(set(re.findall(r"[A-Za-z]", infunc)))
 
+
 # просто красивое оформление для таблицы
 header = [""] * 2
 for key in variables:
