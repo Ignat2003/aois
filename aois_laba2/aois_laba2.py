@@ -48,6 +48,7 @@ for variant in range(1 << len(variables)):
 
     # Вычисление ответа
     while '(' in func:
+        first_parenthesis = None
         last_parenthesis = func.find(')')
         index = 0
         for i in func[:last_parenthesis]:
@@ -55,7 +56,11 @@ for variant in range(1 << len(variables)):
                 first_parenthesis = int(index)
             index += 1
 
+        if first_parenthesis is None:
+            raise print('Parse error didnt find first_parenthesis')
+
         subexpression = func[first_parenthesis: last_parenthesis+1]
+
 
         if '-' in subexpression:
             answer = 'True' if 'False' in subexpression else 'False'
