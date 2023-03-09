@@ -1,36 +1,35 @@
 import re
 
+def find_index_parenthesis(func: str):
+    first_parenthesis = None
+    last_parenthesis = func.find(')')
+    index = 0
+    for i in func[:last_parenthesis]:
+        if i == '(':
+            first_parenthesis = int(index)
+        index += 1
+    if first_parenthesis is None:
+        raise print('Parse error didnt find first_parenthesis')
+
+    return first_parenthesis, last_parenthesis
+
 
 def parse_func(func):
     while '(' in func:
-        first_parenthesis = None
-        last_parenthesis = func.find(')')
-        index = 0
-        for i in func[:last_parenthesis]:
-            if i == '(':
-                first_parenthesis = int(index)
-            index += 1
-
-        if first_parenthesis is None:
-            raise print('Parse error didnt find first_parenthesis')
-
+        first_parenthesis, last_parenthesis = find_index_parenthesis(func)
         subexpression = func[first_parenthesis: last_parenthesis + 1]
-
         if '-' in subexpression:
             answer = 'True' if 'False' in subexpression else 'False'
             func = func.replace(subexpression, answer, 1)
         elif '==' in subexpression:
             answer = 'True' if subexpression.count('False') == 2 or subexpression.count('True') == 2 else 'False'
             func = func.replace(subexpression, answer, 1)
-
         elif '+' in subexpression:
             answer = 'True' if 'True' in subexpression else 'False'
             func = func.replace(subexpression, answer, 1)
-
         elif '*' in subexpression:
             answer = 'True' if subexpression.count('True') == 2 else 'False'
             func = func.replace(subexpression, answer, 1)
-
         elif '>' in subexpression:
             first_symbol, second_symbol = subexpression.split('>')
             if 'True' in second_symbol:
@@ -40,17 +39,12 @@ def parse_func(func):
             else:
                 answer = 'False'
             func = func.replace(subexpression, answer, 1)
-
         else:
             raise print('Parse error')
-
     if func == 'True':
-        # disjunctive_normal_form_safe.append(vars_for_eval.copy())
         result = 1
     else:
         result = 0
-        # conjunctive_normal_form.append(vars_for_eval.copy())
-
     return result
 
 
@@ -165,6 +159,24 @@ def print_conjunctive_number_form(truth_table_answer: dict):
     print(a, end='')
     print(')')
 
+def print_disjunctive_index_form(truth_table_answer: dict):
+    degree = len(truth_table_answer)
+    weights = []
+    for variant, mean in truth_table_answer.items():
+        if mean == 1:
+            weights.append(2 ** degree)
+        degree -= 1
+    return sum(weights)
+
+def print_conjunctive_index_form(truth_table_answer: dict):
+    degree = len(truth_table_answer)
+    weights = []
+    for variant, mean in truth_table_answer.items():
+        if mean == 0:
+            weights.append(2 ** degree)
+        degree -= 1
+    return sum(weights)
+
 
 if __name__ == "__main__":
     infunc = input('Enter your function: ')
@@ -181,3 +193,10 @@ if __name__ == "__main__":
     print_disjunctive_number_form(truth_table_answer)
     print('Conjunctive_number_form')
     print_conjunctive_number_form(truth_table_answer)
+    print('Index form disjunctive')
+
+    ans = print_disjunctive_index_form(truth_table_answer)
+    print(f'F {ans} сднф')
+    print('Index form conjunctive')
+    ans = print_conjunctive_index_form(truth_table_answer)
+    print(f'F {ans} скнф')
