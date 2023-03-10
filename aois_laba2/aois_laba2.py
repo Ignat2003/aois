@@ -160,7 +160,7 @@ def print_conjunctive_number_form(truth_table_answer: dict):
     print(')')
 
 def print_disjunctive_index_form(truth_table_answer: dict):
-    degree = len(truth_table_answer)
+    degree = len(truth_table_answer) - 1
     weights = []
     for variant, mean in truth_table_answer.items():
         if mean == 1:
@@ -169,7 +169,7 @@ def print_disjunctive_index_form(truth_table_answer: dict):
     return sum(weights)
 
 def print_conjunctive_index_form(truth_table_answer: dict):
-    degree = len(truth_table_answer)
+    degree = len(truth_table_answer) - 1
     weights = []
     for variant, mean in truth_table_answer.items():
         if mean == 0:
