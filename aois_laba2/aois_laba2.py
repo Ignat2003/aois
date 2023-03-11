@@ -187,4 +187,4 @@ if __name__ == "__main__":
     print_conjunctive_number_form(truth_table_answer)
     print('Index form ')
     ans = print_index_form(truth_table_answer)
-    print(f'F {ans} сднф')
+    print(f'F {ans}')
